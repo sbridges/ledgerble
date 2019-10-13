@@ -28,6 +28,15 @@ function filesInit() {
     for (f of settings.value("files.list", [])) {
         addFile(f)
     }
+    
+    if(getCurrentPaths().length == 0) {
+        $(`<div class="alert  alert-dismissible fade show alert-warning" role="alert">
+        Use the Files menu to select one or more journal files.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`).prependTo('body')
+    }
 }
 
 function reloadFiles() {
