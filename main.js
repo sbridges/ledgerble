@@ -96,7 +96,7 @@ function parse(event, command, file) {
             new Date(moment(r[0], "YYYY/MM/DD").format()),
             r[3].split(":"),
             parseFloat(r[5]),
-            r[4],
+            r[4] === '' ? "??" : r[4],
             r[2]
           )
         )

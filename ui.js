@@ -163,10 +163,7 @@ function update() {
 
     let dates = []
     for (p of state.rawPostings) {
-        if (p.accounts[0].toUpperCase() === 'EXPENSES' ||
-            p.accounts[0].toUpperCase() == 'INCOME') {
             dates.push(p.date)
-        }
     }
 
     dates.sort((a, b) => {
