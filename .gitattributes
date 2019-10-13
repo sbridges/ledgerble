@@ -1,0 +1,17 @@
+* text=auto !eol
+
+*.htm text
+*.html text
+*.java text
+*.js text
+*.json text
+*.xml text
+*.xslt text
+*.yaml text
+
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.png binary
+

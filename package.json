@@ -1,0 +1,34 @@
+{
+  "name": "ledgerble",
+  "version": "0.0.1",
+  "description": "Gui for Ledger CLI",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Sean Bridges",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "electron": "^6.0.12"
+  },
+  "dependencies": {
+    "binary-search": "^1.3.6",
+    "bootstrap": "^4.1.2",
+    "currency-symbol-map": "^4.0.4",
+    "currencyformatter.js": "^2.2.0",
+    "datatables.net-buttons-dt": "^1.6.0",
+    "datatables.net-colreorder-dt": "^1.5.2",
+    "datatables.net-dt": "^1.10.20",
+    "datatables.net-fixedheader-dt": "^3.1.6",
+    "datatables.net-responsive-dt": "^2.2.3",
+    "datatables.net-scroller-dt": "^2.0.1",
+    "echarts": "^4.3.0",
+    "jquery": "^3.3.1",
+    "moment": "^2.24.0",
+    "numeral": "^2.0.6",
+    "papaparse": "^5.1.0",
+    "popper.js": "^1.14.3",
+    "settings-store": "^1.4.1",
+    "streamjs": "^1.6.4"
+  }
+}

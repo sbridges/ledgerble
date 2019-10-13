@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="vendor/bootstrap/4.3.1/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/jquery-ui/1.12.1/jquery-ui.css">
+  <link rel="stylesheet" href="vendor/datatables/style/datatables.css">
+  <link rel="stylesheet" href="vendor/jquery-treetable/3.2.0/css/jquery.treetable.css">
+  <link rel="stylesheet" href="vendor/jquery-treetable/3.2.0/css/jquery.treetable.theme.default.css">
+
+  <title>Ledgerable</title>
+</head>
+
+<!-- https://stackoverflow.com/questions/25098042/fill-remaining-vertical-space-with-css-using-displayflex/25098486-->
+<style>
+  html,
+  body,
+  .r_flex_container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .r_flex_container {
+    display: flex;
+    flex-flow: column nowrap;
+  }
+
+  .r_flex_fixed_child {
+    flex: none;
+
+  }
+
+  .r_flex_expand_child {
+    flex: auto;
+
+  }
+
+  /** bolds the income/expenses cell, see incomeExpenses.js */
+  .bold-cell {
+    font-weight: bold;
+  }
+</style>
+
+<body>
+  <div class="r_flex_container">
+    <!-- navbar-->
+    <div class="r_flex_fixed_child">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="net-tab" data-toggle="tab" href="#net" role="tab" aria-controls="net"
+            aria-selected="true">Income/Expenses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " id="balance-tab" data-toggle="tab" href="#balance" role="tab" aria-controls="balance"
+            aria-selected="false">Balance</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="expenses-tab" data-toggle="tab" href="#expenses" role="tab" aria-controls="expenses"
+            aria-selected="false">Expenses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="income-tab" data-toggle="tab" href="#income" role="tab" aria-controls="income"
+            aria-selected="false">Income</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="assets-tab" data-toggle="tab" href="#assets" role="tab" aria-controls="assets"
+            aria-selected="false">Assets/Liabilities</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="postings-tab" data-toggle="tab" href="#postings" role="tab" aria-controls="postings"
+            aria-selected="false">Postings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="options-tab" data-toggle="tab" href="#options" role="tab" aria-controls="options"
+            aria-selected="false">Options</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+            aria-expanded="false">Files</a>
+          <div class="dropdown-menu" id="filesListDropDown">
+            <div class="dropdown-divider" id="filesDropDownDivider"></div>
+            <a class="dropdown-item" href="#">
+              <button id="reloadFileButton" class="btn btn-link">Reload Files</button>
+            </a>
+            <a class="dropdown-item" href="#">
+              <input type="file" id="fileSelector" style="display:none">
+              <button id="addFileButton" class="btn btn-link">Open File...</button>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- filter -->
+    <div class="r_flex_fixed_child">
+      <div>
+        <label for="currSelector" style="padding-left: 25px; padding-top: 15px">Currency:</label>
+        <select id="currSelector">
+
+        </select>
+      </div>
+      <div id="dateFilter"
+        style="display:flex; flex-direction:row; align-items:baseline; padding-left: 25px;padding-right: 25px;padding-top: 5px; padding-bottom: 25px;">
+        <span>
+          <select id="dateUnitsSelector">
+            <option value="Monthly">Monthly</option>
+            <option value="Quarterly">Quarterly</option>
+            <option value="Yearly">Yearly</option>
+          </select>
+        </span>
+        <label for="dateRangeFrom" style="padding-left: 5px;">From:</label><input id="dateRangeFrom" size="8" />
+        <span style="padding-left: 15px; "></span>
+        <span id="date-range-slider" style="flex: auto;"></span>
+        <label for="dateRangeTo" style="padding-left: 15px; ">To:</label><input id="dateRangeTo" size="8" />
+      </div>
+
+    </div>
+    <!-- main content-->
+    <div class="r_flex_expand_child" style=" padding-left: 50px; padding-right: 50px; padding-bottom: 50px;">
+      <div class="tab-content" id="tab-content" style="height:100%">
+
+        <div class="tab-pane fade show active" id="net" role="tabpanel" aria-labelledby="net-tab"
+          style="height: 100%; position: relative;" style="width: 100%; height: 100%;">
+          <div class="r_flex_container" style="width: 100%; height: 100%;">
+            <div class="r_flex_expand_child">
+              <div id="incomeExpenses" style="width: 100%; height: 100%;"></div>
+            </div>
+            <div style="display:flex; justify-content: center;">
+              <table id="incomeExpensesTable" class="cell-border compact stripe ">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Avg</th>
+                    <th>Max</th>
+                    <th>Min</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-pane fade " id="balance" role="tabpanel" aria-labelledby="balance-tab"
+          style="width: 100%; height: 100%;">
+          <div id="balance" style="width: 100%; height: 100%;">
+            <div id="balanceTable"></div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="expenses" role="tabpanel" aria-labelledby="expenses-tab"
+          style="width: 100%; height: 100%;">
+          <a href="#" id="expensesDisplayGraph">Graph</a>
+          <a href="#" id="expensesDisplayTree">Text</a>
+          <div id="expensesTreeMap" style="width: 100%; height: 100%;"></div>
+          <div id="expensesTable" style="width: 100%; height: 100%;"></div>
+        </div>
+        <div class="tab-pane fade" id="income" role="tabpanel" aria-labelledby="income-tab"
+          style="width: 100%; height: 100%;">
+          <a href="#" id="incomeDisplayGraph">Graph</a>
+          <a href="#" id="incomeDisplayTree">Text</a>
+          <div id="incomeTreeMap" style="width: 100%; height: 100%;"></div>
+          <div id="incomeTable" style="width: 100%; height: 100%;"></div>
+        </div>
+        <div class="tab-pane fade" id="assets" role="tabpanel" aria-labelledby="assets-tab"
+          style="width: 100%; height: 100%;">
+          <div id="assetsChart" style="width: 100%; height: 100%;"></div>
+        </div>
+        <div class="tab-pane fade" id="postings" role="tabpanel" aria-labelledby="postings-tab"
+          style="width: 100%; height: 100%;">
+          <table id="postingsTable" class="cell-border compact stripe">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Accounts</th>
+                <th>Payee</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="tab-pane fade" id="options" role="tabpanel" aria-labelledby="options-tab"
+          style="width: 100%; height: 100%;">
+
+          Ledger command : <input type="text" id="ledgerCommand" size="25">
+          <input type="file" id="selectLedgerCommand" style="display: none;" />
+          <input type="button" id="browseCommandButton" value="Browse..." />
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="detailsModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-body" id="detailsModalBody">
+          <table id="modalPostings" class="cell-border compact stripe">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Accounts</th>
+                <th>Payee</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+          </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script src="ui.js">
+</script>
+
+</html>
