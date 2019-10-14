@@ -9,9 +9,9 @@ First install [ledger-cli](https://www.ledger-cli.org/) and [npm](https://www.np
 
 When those are installed, install ledgerble using the command,
 
-'''
-npm install -g ledgerble
-'''
+
+    npm install -g ledgerble
+
 
 After this, you can type `ledgerble` to start.
 
