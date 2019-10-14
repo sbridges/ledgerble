@@ -16,3 +16,12 @@ npm install -g ledgerble
 After this, you can type `ledgerble` to start.
 
 After starting, use the "Files" menu to select and open your ledger file.
+
+
+# Screenshots
+
+![Income/Expenses](web/inc_exp.png)
+
+![Expenses](web/exp.png)
+
+![balance](web/bal.png)
