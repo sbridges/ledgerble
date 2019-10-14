@@ -3,7 +3,7 @@
 
 A ui for [ledger-cli](https://www.ledger-cli.org/) files
 
-# h1 Installation
+# Installation
 
 First install [ledger-cli](https://www.ledger-cli.org/) and [npm](https://www.npmjs.com/get-npm).  
 
