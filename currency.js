@@ -17,8 +17,8 @@ function updateCurrencies(currencies) {
     for (currency of currencies) {
         $('#currSelector')
             .append($("<option></option>")
-                .attr("value", escapeHtml(currency))
-                .text(escapeHtml(currency)));
+                .attr("value", currency)
+                .text(currency));
     }
 
     if (noChange) {
