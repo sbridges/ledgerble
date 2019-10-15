@@ -7,11 +7,20 @@ const settings = require("settings-store")
 
 
 function initSettings() {
-    val = settings.value("options.ledger.command", 'ledger')
-    $('#ledgerCommand').val(val)
+    let cmd = settings.value("options.ledger.command", 'ledger')
+    let hledger = settings.value("options.hledger", false)
+
+    $('#ledgerCommand').val(cmd)
     $('#ledgerCommand').change(() => {
         saveLedgerCommand()
     })
+
+    $('#hLedger').prop('checked', hledger)
+    $('#hLedger').change(() => {
+        saveHLedger()
+    })
+
+    
 
     $('#browseCommandButton').click(() => {
         document.getElementById('selectLedgerCommand').click();
@@ -28,8 +37,17 @@ function saveLedgerCommand() {
     settings.setValue("options.ledger.command", getLedgerCommand())
 }
 
+function saveHLedger() {
+    console.log(getHLedger())
+    settings.setValue("options.hledger", getHLedger())
+}
+
 function getLedgerCommand() {
     return $('#ledgerCommand').val()
 }
 
-module.exports = { initSettings, getLedgerCommand }
+function getHLedger() {
+    return $('#hLedger').is(":checked")
+}
+
+module.exports = { initSettings, getLedgerCommand, getHLedger }

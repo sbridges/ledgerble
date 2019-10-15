@@ -26,7 +26,7 @@ const { updateCurrencies, initCurrencies } = require('./currency')
 
 const CurrencyFormatter = require('currencyformatter.js')
 const currencyToSymbolMap = require('currency-symbol-map/map')
-const { initSettings, getLedgerCommand } = require('./options')
+const { initSettings } = require('./options')
 const setupToggle = require('./toggle')
 const updateTreeMap = require('./treeMap')
 //showModal isn't used explicitly, but its called from
@@ -138,8 +138,6 @@ initCurrencies(update)
 
 
 function update() {
-
-
 
     state.postingsBeforeCurrencySelected = Stream(state.files.values())
         .filter(t => t) //Stream gives an extra undefined for some reason

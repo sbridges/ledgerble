@@ -69,46 +69,24 @@ app.setAboutPanelOptions({
   copyright: "Sean Bridges"
 });
 
-ipcMain.on("parse", function (event, command, file) {
-  parse(event, command, file);
+ipcMain.on("parse", function (event, command, hledger, file) {
+  parse(event, command, hledger, file);
 });
 
 
-function parse(event, command, file) {
-
-
+function parse(event, command, hledger, file) {
   try {
-    out = execSync('"' + command + '" -f "' + file + '" csv --no-pager --no-color', { encoding: 'utf-8', maxBuffer: 100 * 1024 * 1024 })
-    res = papaparse.parse(out, {
-      delimiter: ',',
-      header: false,
-      escapeChar: '\\',
-    })
-
-    if (res.errors.length > 0) {
-      throw res.errors[0].message
+    let postings;
+    if (hledger) {
+      postings = parseHLedger(event, command, file)
+    } else {
+      postings = parseLedger(event, command, file)
     }
-    let postings = []
-    for (r of res.data) {
-      if (r.length != 1) {
-        postings.push(
-          new Posting(
-            new Date(moment(r[0], "YYYY/MM/DD").format()),
-            r[3].split(":"),
-            parseFloat(r[5]),
-            r[4] === '' ? "??" : r[4],
-            r[2]
-          )
-        )
-      }
-    }
-
     event.reply(
       'parsed',
       file,
       postings,
       null);
-
   } catch (t) {
     console.log('couldnt parse', file, t)
     event.reply(
@@ -117,7 +95,92 @@ function parse(event, command, file) {
       null,
       "error:" + t);
   }
+}
+
+function parseLedger(event, command, file) {
+
+  out = execSync('"' + command + '" -f "' + file + '" csv --no-pager --no-color', { encoding: 'utf-8', maxBuffer: 100 * 1024 * 1024 })
+  res = papaparse.parse(out, {
+    delimiter: ',',
+    header: false,
+    escapeChar: '\\',
+  })
+
+  if (res.errors.length > 0) {
+    throw res.errors[0].message
+  }
+  let postings = []
+  for (r of res.data) {
+    if (r.length != 1) {
+      postings.push(
+        new Posting(
+          new Date(moment(r[0], "YYYY/MM/DD").format()),
+          r[3].split(":"),
+          parseFloat(r[5]),
+          r[4] === '' ? "??" : r[4],
+          r[2]
+        )
+      )
+    }
+  }
+  
+  return postings;
+
+ 
 
 
+}
+
+function parseHLedger(event, command, file) {
+
+  out = execSync('"' + command + '" -f "' + file + '" register -O csv', { encoding: 'utf-8', maxBuffer: 100 * 1024 * 1024 })
+  res = papaparse.parse(out, {
+    delimiter: ',',
+    header: true,
+    escapeChar: '"',
+    skipEmptyLines : true
+  })
+
+  if (res.errors.length > 0) {
+    throw res.errors[0].message
+  }
+  let postings = []
+  for (r of res.data) {
+    if (r.length != 1) {
+      let valAndCurr = r['amount']
+      //a hack
+      //assume we are formated with the currency at the start
+      //or the end, with the value in the middle
+      //parse the non numeric bits out first
+      //from the end and start, then trim and combine
+      //them to get the currency
+      let match = valAndCurr.match(/([^0-9.,-]*)([0-9.,-]+)([^0-9.,-]*)/)
+      if(!match) {
+        console.log(valAndCurr)
+      }
+      //hledger formats the value with ,'s
+      //hopefully this isn't ever localized to
+      //format as 123.456,78
+      val = match[2].replace(',', '');
+      curr = match[1].trim() + match[3].trim()
+      if(curr === '') {
+        curr = '??'
+      }
+
+      postings.push(
+        new Posting(
+          new Date(moment(r['date'], "YYYY/MM/DD").format()),
+          r['account'].split(":"),
+          parseFloat(val),
+          curr,
+          r['description']
+        )
+      )
+    }
+
+    
+  }
+  
+  return postings
 
 }
