@@ -66,7 +66,7 @@ class State {
 
 //Initializing is optional when using Electron
 settings.init({
-    appName: "Ledgerable", //required,
+    appName: "Ledgerble", //required,
     publisherName: "sgb", //optional
     reverseDNS: "com.github.sbridges" //required for macOS
 })
