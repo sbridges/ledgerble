@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 /**
  * Code for managing date selections
  */
@@ -7,7 +9,13 @@ const dateSliderSelector = $("#date-range-slider")
 
 function updateDateUnits(select, state) {
     state.dateUnitsChanged = true
-    if (select.value === 'Monthly') {
+    
+    if (select.value == 'Daily') {
+        state.dateFormat = date => moment(date).format('YYYY-MM-DD');
+    } else if (select.value == 'Weekly') {
+        state.dateFormat = date =>  moment(date).format('YYYY-WW');
+    }  
+    else if (select.value === 'Monthly') {
         state.dateFormat = date => date.getFullYear() + "-" + (1 + date.getMonth()).toString().padStart(2, "0");
     } else if (select.value == 'Quarterly') {
         state.dateFormat = date => date.getFullYear() + "-Q" + (1 + Math.round((date.getMonth() + 1) / 4));

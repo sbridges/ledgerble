@@ -109,15 +109,17 @@
         style="display:flex; flex-direction:row; align-items:baseline; padding-left: 25px;padding-right: 25px;padding-top: 5px; padding-bottom: 25px;">
         <span>
           <select id="dateUnitsSelector">
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
             <option value="Monthly">Monthly</option>
             <option value="Quarterly">Quarterly</option>
             <option value="Yearly">Yearly</option>
           </select>
         </span>
-        <label for="dateRangeFrom" style="padding-left: 5px;">From:</label><input id="dateRangeFrom" size="8" />
+        <label for="dateRangeFrom" style="padding-left: 5px;">From:</label><input id="dateRangeFrom" size="10" />
         <span style="padding-left: 15px; "></span>
         <span id="date-range-slider" style="flex: auto;"></span>
-        <label for="dateRangeTo" style="padding-left: 15px; ">To:</label><input id="dateRangeTo" size="8" />
+        <label for="dateRangeTo" style="padding-left: 15px; ">To:</label><input id="dateRangeTo" size="10" />
       </div>
 
     </div>
