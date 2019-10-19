@@ -47,7 +47,7 @@ function updateAssets(myChart, balances, intervals, startIndex, endIndex, format
             {
                 name: 'Total',
                 type: 'line',
-                stack: k,
+                stack: 'Total',
                 data: totals
             },
         )
