@@ -5,7 +5,7 @@
 const input = document.getElementById("fileSelector")
 const settings = require("settings-store")
 const { basename } = require('path')
-const {getLedgerCommand, getHLedger} = require('./options')
+const {getSetting} = require('./options')
 
 let fileNumber = 1;
 
@@ -41,7 +41,7 @@ function filesInit() {
 
 function reloadFiles() {
     for (path of getCurrentPaths()) {
-        ipc.send("parse", getLedgerCommand(), getHLedger(), path)
+        ipc.send("parse", getSetting("options.ledger.command"), getSetting('options.hledger'), path)
     }
 }
 
@@ -104,7 +104,7 @@ function addFile(path) {
         removeFileById(id)
     });
 
-    ipc.send("parse", getLedgerCommand(), getHLedger(), path)
+    ipc.send("parse", getSetting("options.ledger.command"), getSetting('options.hledger'), path)
 
 
 }
@@ -124,7 +124,7 @@ function enableFileById(id) {
     const path = element.path
     enabled = document.getElementById('enable' + id).checked
     if (enabled) {
-        ipc.send("parse", getLedgerCommand(), getHLedger(), path)
+        ipc.send("parse", getSetting("options.ledger.command"), getSetting('options.hledger'), path)
     } else {
         state.files.delete(path)
         update()
