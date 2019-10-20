@@ -98,6 +98,25 @@ function dateFmtd() {
     return this.date.getFullYear() + '/' + (1 + this.date.getMonth()) + '/' + this.date.getDate()
 }
 
+let typeExtractor = accountString => {
+    if(accountString.toLowerCase().match(/^expenses?(:|$)/)) {
+      return 'expenses'
+    }
+    if(accountString.toLowerCase().match(/^(income|revenue)s?(:|$)/)) {
+      return 'income'
+    }
+    if(accountString.toLowerCase().match(/^assets?(:|$)/)) {
+      return 'assets'
+    }
+    if(accountString.toLowerCase().match(/^(debts?|liabilit(y|ies))(:|$)/)) {
+      return 'liabilities'
+    }
+    if(accountString.toLowerCase().match(/^equity(:|$)/)) {
+      return 'equity'
+    }
+    return 'unset'
+}
+
 ipc.on('parsed', function (event, file, postings, error) {
     if (error) {
         alertCantparse(file, error)
@@ -107,7 +126,8 @@ ipc.on('parsed', function (event, file, postings, error) {
         postings.forEach(t => {
             t.date = new Date(t.date)
             t.accountsFmtd = accountsFmtd
-            t.dateFmtd = dateFmtd
+            t.dateFmtd = dateFmtd,
+            t.type = typeExtractor(t.accounts.join(':'))
         })
     }
 
