@@ -46,7 +46,7 @@ function updatePostings(postings, formatter, postingsTable, paging) {
     tableElement._table = postingsTable.DataTable({
         data: rows,
         deferRender: true,
-        lengthMenu: [15, 100, 500, "All"],
+        lengthMenu: [ [15, 50, 500, -1], [15, 50, 500, "All"] ],
         paging: paging,
         searching: paging,
         order: [[0, "desc"]],
