@@ -14,7 +14,7 @@ function updateBalance(node, balances, endIndex, formatter) {
         if (val === 0) {
             return;
         }
-        for (a of key.split(':')) {
+        for (a of key.account.split(':')) {
 
             if (currentAccount == '') {
                 currentAccount = a;

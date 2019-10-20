@@ -13,13 +13,14 @@ function updatePostings(postings, formatter, postingsTable, paging) {
             p2 = postings[i + 1]
         }
 
-        if (p2 && p1.date.getTime() === p2.date.getTime() && p1.amount === -p2.amount && p1.merchant === p2.merchant) {
+        if (p2 && p1.date.getTime() === p2.date.getTime() && p1.amount === -p2.amount && p1.merchant === p2.merchant && p1.type === p2.type) {
             i++
             rows.push([
                 p1.date.getFullYear() + '/' + (1 + p1.date.getMonth()) + '/' + p1.date.getDate() + "<br>&nbsp",
                 escapeHtml(p1.accounts.join(':')) + "<br>" + escapeHtml(p2.accounts.join(':')),
                 escapeHtml(p1.merchant) + "<br>&nbsp",
                 formatter(p1.amount) + "<br>&nbsp",
+                p1.type
             ])
         } else {
             rows.push([
@@ -27,6 +28,7 @@ function updatePostings(postings, formatter, postingsTable, paging) {
                 escapeHtml(p1.accounts.join(':')),
                 escapeHtml(p1.merchant),
                 formatter(p1.amount),
+                p1.type
             ])
         }
 

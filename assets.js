@@ -6,15 +6,16 @@ function updateAssets(myChart, balances, intervals, startIndex, endIndex, format
 
     const dateIntervals = intervals.slice(startIndex, endIndex + 1)
     const amountsBucketed = new Map()
-    const totals = Array.from(dateIntervals, x => 0)
-    balances.forEach((values, accounts) => {
-        if (!accounts.toUpperCase().startsWith('ASSETS') &&
-            !accounts.toUpperCase().startsWith('LIABILITIES')) {
+    const totals = Array.from(dateIntervals, _ => 0)
+    balances.forEach((values, key) => {
+        if (key.type !== 'assets' &&
+            key.type !== 'liability' ) {
             return;
         }
+        
         const valueSlice = values.slice(startIndex, endIndex + 1)
         amountsBucketed.set(
-            accounts,
+            key.account,
             valueSlice
         )
         for (i = 0; i < totals.length; i++) {
@@ -35,8 +36,6 @@ function updateAssets(myChart, balances, intervals, startIndex, endIndex, format
                 name: k,
                 type: 'line',
                 stack: k,
-                //stack: 'stack',
-                //areaStyle: {},
                 data: amountsBucketed.get(k)
             },
         )

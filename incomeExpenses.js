@@ -5,13 +5,13 @@
 
 const Stream = require('streamjs');
 
-function getSums(dateToPostings, keys, category, flip) {
+function getSums(dateToPostings, keys, type, flip) {
     const answer = [];
     for (key of keys) {
         let sum = 0;
         if (dateToPostings[key]) {
             for (p of dateToPostings[key]) {
-                if (p.accounts[0].toUpperCase() === category.toUpperCase()) {
+                if (p.type === type) {
                     sum += p.amount
                 }
             }

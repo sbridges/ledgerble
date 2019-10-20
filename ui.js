@@ -209,12 +209,12 @@ function update() {
 
 
     const expensesPostings = Stream(state.postings)
-        .filter(t => t.accounts[0].toUpperCase() === "EXPENSES")
+        .filter(t => t.type === 'expenses')
         .toList();
     updateTreeMap(expensesTreeMap, document.getElementById('expensesTable'), expensesPostings, false, state.formatter);
 
     const incomePostings = Stream(state.postings)
-        .filter(t => t.accounts[0].toUpperCase() === "INCOME")
+        .filter(t => t.type === 'income')
         .toList();
     updateTreeMap(incomeTreeMap, document.getElementById('incomeTable'), incomePostings, true, state.formatter);
 
@@ -269,22 +269,43 @@ function createValueFormatter(currentCurrency) {
     }
 }
 
+class BalanceKey {
+    constructor(account, type) {
+        this.account = account;
+        this.type = type;
+    }
+
+    toString() {
+        return this.account + '<****>' + this.type;
+    }
+}
+
 function calculateBalances(rawPostings, intervals, dateFormat) {
+
+    let keys = new Map()
 
     //map of account to an array of values for each
     //interval which represent the total for that
     //account at that time
 
+    
     const amountsBucketed = new Map()
     for (p of rawPostings) {
 
-
-        let key = p.accounts.join(':')
+        let key = new BalanceKey(p.accounts.join(':'), p.type)
+        //key doesn't equal any other key
+        //uniquify them
+        if(keys.has(key.toString())) {
+            key = keys.get(key.toString())
+        } else {
+            keys.set(key.toString(), key)
+        }
         let amounts;
         if (amountsBucketed.has(key)) {
+            
             amounts = amountsBucketed.get(key)
         } else {
-            amounts = Array.from(intervals, x => 0)
+            amounts = Array.from(intervals, _ => 0)
             amountsBucketed.set(key, amounts)
         }
 

@@ -5,12 +5,13 @@ const papaparse = require('papaparse')
 const moment = require('moment');
 
 class Posting {
-  constructor(date, accounts, amount, currency, merchant) {
+  constructor(date, accounts, amount, currency, merchant, type) {
     this.date = date;
     this.accounts = accounts; //array[String]
     this.amount = amount;     //Number
     this.currency = currency; //String
     this.merchant = merchant
+    this.type = type
   }
 }
 
@@ -75,12 +76,32 @@ ipcMain.on("parse", function (event, command, hledger, file) {
 
 
 function parse(event, command, hledger, file) {
+
+  typeExtractor = accountString => {
+      if(accountString.toUpperCase().startsWith('EXPENSES')) {
+        return 'expenses'
+      }
+      if(accountString.toUpperCase().startsWith('INCOME')) {
+        return 'income'
+      }
+      if(accountString.toUpperCase().startsWith('ASSETS')) {
+        return 'assets'
+      }
+      if(accountString.toUpperCase().startsWith('LIABILITIES')) {
+        return 'liabilities'
+      }
+      if(accountString.toUpperCase().startsWith('EQUITY')) {
+        return 'equity'
+      }
+      return 'unset'
+  }
+
   try {
     let postings;
     if (hledger) {
-      postings = parseHLedger(event, command, file)
+      postings = parseHLedger(command, file, typeExtractor)
     } else {
-      postings = parseLedger(event, command, file)
+      postings = parseLedger(command, file, typeExtractor)
     }
     event.reply(
       'parsed',
@@ -97,7 +118,7 @@ function parse(event, command, hledger, file) {
   }
 }
 
-function parseLedger(event, command, file) {
+function parseLedger(command, file, typeExtractor) {
 
   out = execSync('"' + command + '" -f "' + file + '" csv --no-pager --no-color', { encoding: 'utf-8', maxBuffer: 100 * 1024 * 1024 })
   res = papaparse.parse(out, {
@@ -118,7 +139,8 @@ function parseLedger(event, command, file) {
           r[3].split(":"),
           parseFloat(r[5]),
           r[4] === '' ? "??" : r[4],
-          r[2]
+          r[2],
+          typeExtractor(r[3])
         )
       )
     }
@@ -131,7 +153,7 @@ function parseLedger(event, command, file) {
 
 }
 
-function parseHLedger(event, command, file) {
+function parseHLedger(command, file, typeExtractor) {
 
   out = execSync('"' + command + '" -f "' + file + '" register -O csv', { encoding: 'utf-8', maxBuffer: 100 * 1024 * 1024 })
   res = papaparse.parse(out, {
@@ -173,7 +195,8 @@ function parseHLedger(event, command, file) {
           r['account'].split(":"),
           parseFloat(val),
           curr,
-          r['description']
+          r['description'],
+          typeExtractor(r['account'])
         )
       )
     }
