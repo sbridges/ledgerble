@@ -32,10 +32,10 @@ function makeTreeTable(amounts, node, formatter, sortByName, details) {
         <tr>
             <th>Account</th>
             <th>Amount</th>
-            ${details ? '<th>Postings<th>' : ''}
+            ${details ? '<th>Postings</th>' : ''}
         </tr>
       </thead>`)
-
+    console.log(amounts)
     const keys = Array.from(amounts.keys())
     if (sortByName) {
         keys.sort()
@@ -50,14 +50,24 @@ function makeTreeTable(amounts, node, formatter, sortByName, details) {
             //expensse:home and expenses:entertainment
             //as those are the buckets each is in
 
-            ls = l.split(':')
-            lr = r.split(':')
-            ls.length = Math.min(ls.length, lr.length)
-            lr.length = Math.min(ls.length, lr.length)
+            let lSplit = l.split(':')
+            let rSplit = r.split(':')
 
-            return amounts.get(lr.join(':')) -
-                amounts.get(ls.join(':'))
-
+            for(i = 1; i < Math.min(lSplit.length, rSplit.length); i++) {
+                lPrefix = lSplit.slice(0, i+1).join(':')
+                rPrefix = rSplit.slice(0, i+1).join(':')
+                if(lPrefix != rPrefix) {
+                    let answer = amounts.get(rPrefix) - amounts.get(lPrefix)
+                    if(answer != 0) {
+                        return answer;
+                    }
+                }
+            }
+            if(l > r) {
+                return 1;
+            } else {
+                return -1;
+            }
         })
     }
 
