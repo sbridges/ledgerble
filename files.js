@@ -134,4 +134,4 @@ function enableFileById(id) {
 
 
 
-module.exports = { filesInit, alertCantparse }
+module.exports = { filesInit, alertCantparse, reloadFiles }

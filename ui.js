@@ -15,7 +15,7 @@ require('./vendor/jquery-ui/1.12.1/jquery-ui')
 require("./vendor/echarts/macaron.js")
 const settings = require("settings-store")
 const { dateInit, dateUpdate, setDate } = require('./dateRangeSelector')
-const { filesInit, alertCantparse } = require('./files')
+const { filesInit, alertCantparse, reloadFiles } = require('./files')
 const updateAssets = require('./assets')
 const updateBalance = require('./balance')
 var bs = require("binary-search");
@@ -26,7 +26,7 @@ const { updateCurrencies, initCurrencies } = require('./currency')
 
 const CurrencyFormatter = require('currencyformatter.js')
 const currencyToSymbolMap = require('currency-symbol-map/map')
-const { initSettings } = require('./options')
+const { initSettings, getSetting } = require('./options')
 const setupToggle = require('./toggle')
 const updateTreeMap = require('./treeMap')
 //showModal isn't used explicitly, but its called from
@@ -75,7 +75,7 @@ $('#cantParseAlert').hide()
 
 const state = new State();
 dateInit(state)
-initSettings()
+
 setupToggle(
     document.getElementById('expensesDisplayGraph'),
     document.getElementById('expensesDisplayTree'),
@@ -98,24 +98,33 @@ function dateFmtd() {
     return this.date.getFullYear() + '/' + (1 + this.date.getMonth()) + '/' + this.date.getDate()
 }
 
-let typeExtractor = accountString => {
-    if(accountString.toLowerCase().match(/^expenses?(:|$)/)) {
-      return 'expenses'
+let typeExtractor = null;
+
+function updateTypeExtractor() {
+    typeExtractor = accountString => {
+        if(accountString.toLowerCase().match(new RegExp(getSetting('options.expenses.regex')))) {
+          return 'expenses'
+        }
+        if(accountString.toLowerCase().match(new RegExp(getSetting('options.income.regex')))) {
+          return 'income'
+        }
+        if(accountString.toLowerCase().match(new RegExp(getSetting('options.assets.regex')))) {
+          return 'assets'
+        }
+        if(accountString.toLowerCase().match(new RegExp(getSetting('options.liabilities.regex')))) {
+          return 'liabilities'
+        }
+        if(accountString.toLowerCase().match(new RegExp(getSetting('options.equity.regex')))) {
+          return 'equity'
+        }
+        return 'unknown'
     }
-    if(accountString.toLowerCase().match(/^(income|revenue)s?(:|$)/)) {
-      return 'income'
-    }
-    if(accountString.toLowerCase().match(/^assets?(:|$)/)) {
-      return 'assets'
-    }
-    if(accountString.toLowerCase().match(/^(debts?|liabilit(y|ies))(:|$)/)) {
-      return 'liabilities'
-    }
-    if(accountString.toLowerCase().match(/^equity(:|$)/)) {
-      return 'equity'
-    }
-    return 'unset'
 }
+initSettings(() => {
+    updateTypeExtractor()
+    reloadFiles()
+})
+updateTypeExtractor()
 
 ipc.on('parsed', function (event, file, postings, error) {
     if (error) {
@@ -313,7 +322,9 @@ function calculateBalances(rawPostings, intervals, dateFormat) {
     for (p of rawPostings) {
 
         let key = new BalanceKey(p.accounts.join(':'), p.type)
-        //key doesn't equal any other key
+        //in javascripts it
+        //seems object have to be the same
+        //to be equal
         //uniquify them
         if(keys.has(key.toString())) {
             key = keys.get(key.toString())
