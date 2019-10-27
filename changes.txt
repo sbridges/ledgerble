@@ -1,3 +1,6 @@
+0.0.7
+- parse hledger when values are in the form 123.456,78 rather than 123,456.78
+
 0.0.6
 - allow configuring which accounts are configured income/expenses/assets/liabilities
 - various bug fixes

@@ -3,6 +3,7 @@ const fs = require('fs')
 const { execSync } = require('child_process');
 const papaparse = require('papaparse')
 const moment = require('moment');
+const {parseHLedgerVal} = require('./hledger')
 
 class Posting {
   constructor(date, accounts, amount, currency, merchant, type) {
@@ -160,10 +161,9 @@ function parseHLedger(command, file) {
       if(!match) {
         console.log(valAndCurr)
       }
-      //hledger formats the value with ,'s
-      //hopefully this isn't ever localized to
-      //format as 123.456,78
-      val = match[2].replace(',', '');
+
+      let currVal = parseHLedgerVal(match[2])
+      
       curr = match[1].trim() + match[3].trim()
       if(curr === '') {
         curr = '??'
@@ -173,7 +173,7 @@ function parseHLedger(command, file) {
         new Posting(
           new Date(moment(r['date'], "YYYY/MM/DD").format()),
           r['account'].split(":"),
-          parseFloat(val),
+          currVal,
           curr,
           r['description']
         )

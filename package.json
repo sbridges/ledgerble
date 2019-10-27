@@ -1,14 +1,17 @@
 {
   "name": "ledgerble",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Gui for Ledger CLI",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "test": "mocha"
   },
   "author": "Sean Bridges",
   "license": "Apache-2.0",
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^6.2.2"
+  },
   "bin": {
     "ledgerble": "ledgerble.js"
   },
