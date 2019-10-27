@@ -32,7 +32,7 @@ function updateBalance(node, balances, endIndex, formatter) {
         }
     });
 
-    makeTreeTable(amounts, node, formatter, true)
+    makeTreeTable(amounts, node, formatter, false)
 
 
 

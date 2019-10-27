@@ -53,7 +53,7 @@ function makeTreeTable(amounts, node, formatter, sortByName, details) {
             let lSplit = l.split(':')
             let rSplit = r.split(':')
 
-            for(i = 1; i < Math.min(lSplit.length, rSplit.length); i++) {
+            for(i = 0; i < Math.min(lSplit.length, rSplit.length); i++) {
                 lPrefix = lSplit.slice(0, i+1).join(':')
                 rPrefix = rSplit.slice(0, i+1).join(':')
                 if(lPrefix != rPrefix) {
