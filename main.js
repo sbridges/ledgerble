@@ -65,11 +65,16 @@ app.on('activate', () => {
   }
 })
 
-app.setAboutPanelOptions({
-  applicationName: "Ledgerble",
-  version: "0.1",
-  copyright: "Sean Bridges"
-});
+//https://github.com/electron/electron/issues/10451
+//not supported on all os's
+if(app.setAboutPanelOptions) {
+  app.setAboutPanelOptions({
+    applicationName: "Ledgerble",
+    version: "0.1",
+    copyright: "Sean Bridges"
+  });
+}
+
 
 ipcMain.on("parse", function (event, command, hledger, file) {
   parse(event, command, hledger, file);

@@ -1,3 +1,6 @@
+0.0.8
+- fix for windows startup, check if setAboutPanelOptions is defined
+
 0.0.7
 - parse hledger when values are in the form 123.456,78 rather than 123,456.78
 - sort balance table by value, not name
