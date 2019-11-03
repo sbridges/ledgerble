@@ -1,6 +1,6 @@
 {
   "name": "ledgerble",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Gui for Ledger CLI",
   "main": "main.js",
   "scripts": {
