@@ -1,3 +1,6 @@
+0.0.9
+- update accounts/income/assets/liabilities regex to match lowercase
+
 0.0.8
 - fix for windows startup, check if setAboutPanelOptions is defined
 

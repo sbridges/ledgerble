@@ -102,19 +102,24 @@ let typeExtractor = null;
 
 function updateTypeExtractor() {
     typeExtractor = accountString => {
-        if(accountString.toLowerCase().match(new RegExp(getSetting('options.expenses.regex')))) {
+        const expensesRegex = getSetting('options.expenses.regex');
+        if(accountString.match(new RegExp(expensesRegex, "i"))) {
           return 'expenses'
         }
-        if(accountString.toLowerCase().match(new RegExp(getSetting('options.income.regex')))) {
+        const incomeRegex = getSetting('options.income.regex');
+        if(accountString.match(new RegExp(incomeRegex, "i"))) {
           return 'income'
         }
-        if(accountString.toLowerCase().match(new RegExp(getSetting('options.assets.regex')))) {
+        const assetsRegex = getSetting('options.assets.regex');
+        if(accountString.match(new RegExp(assetsRegex, "i"))) {
           return 'assets'
         }
-        if(accountString.toLowerCase().match(new RegExp(getSetting('options.liabilities.regex')))) {
+        const liabilitiesRegex = getSetting('options.liabilities.regex');
+        if(accountString.match(new RegExp(liabilitiesRegex, "i"))) {
           return 'liabilities'
         }
-        if(accountString.toLowerCase().match(new RegExp(getSetting('options.equity.regex')))) {
+        const equityRegex = getSetting('options.equity.regex');
+        if(accountString.match(new RegExp(equityRegex, "i"))) {
           return 'equity'
         }
         return 'unknown'
