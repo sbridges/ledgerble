@@ -10,7 +10,7 @@ First install [ledger-cli](https://www.ledger-cli.org/)
 
 Download the [latest release](https://github.com/sbridges/ledgerble/releases/latest), unzip it and run ledgerble.exe
 
-If ledgerble isn't on your path, you can point to the ledger executable in the Options screen.
+If ledger isn't on your path, you can point to the ledger executable in the Options screen.
 
 After starting, use the "Files" menu to select and open your ledger file.
 
@@ -22,7 +22,7 @@ Download the [latest release](https://github.com/sbridges/ledgerble/releases/lat
 
     open ledgerble.app
     
-If ledgerble isn't on your path, you can point to the ledger executable in the Options screen.
+If ledger isn't on your path, you can point to the ledger executable in the Options screen.
 
 After starting, use the "Files" menu to select and open your ledger file.
 
