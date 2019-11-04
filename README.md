@@ -8,7 +8,7 @@ A ui for [ledger-cli](https://www.ledger-cli.org/) files
 
 First install [ledger-cli](https://www.ledger-cli.org/) 
 
-Download the [latest release] (https://github.com/sbridges/ledgerble/releases/latest), unzip it and run ledgerble.exe
+Download the [latest release](https://github.com/sbridges/ledgerble/releases/latest), unzip it and run ledgerble.exe
 
 If ledgerble isn't on your path, you can point to the ledger executable in the Options screen.
 
@@ -18,7 +18,7 @@ After starting, use the "Files" menu to select and open your ledger file.
 
 First install [ledger-cli](https://www.ledger-cli.org/) 
 
-Download the [latest release] (https://github.com/sbridges/ledgerble/releases/latest), unzip it and in a terminal type 
+Download the [latest release](https://github.com/sbridges/ledgerble/releases/latest), unzip it and in a terminal type 
 
     open ledgerble.app
     
