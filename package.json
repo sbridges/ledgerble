@@ -10,7 +10,7 @@
   "author": "Sean Bridges",
   "license": "Apache-2.0",
   "devDependencies": {
-    "mocha": "^6.2.2"
+    "mocha": "^6.2.3"
   },
   "bin": {
     "ledgerble": "ledgerble.js"
@@ -26,13 +26,13 @@
     "datatables.net-fixedheader-dt": "^3.1.6",
     "datatables.net-responsive-dt": "^2.2.3",
     "datatables.net-scroller-dt": "^2.0.1",
-    "echarts": "^4.6.0",
-    "electron": "^6.1.7",
-    "jquery": "^3.3.1",
-    "moment": "^2.24.0",
+    "echarts": "^4.7.0",
+    "electron": "^6.1.10",
+    "jquery": "^3.5.0",
+    "moment": "^2.25.1",
     "numeral": "^2.0.6",
-    "papaparse": "^5.1.1",
-    "popper.js": "^1.16.0",
+    "papaparse": "^5.2.0",
+    "popper.js": "^1.16.1",
     "settings-store": "^1.4.1",
     "streamjs": "^1.6.4"
   }
