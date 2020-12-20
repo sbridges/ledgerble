@@ -27,7 +27,7 @@
     "datatables.net-responsive-dt": "^2.2.3",
     "datatables.net-scroller-dt": "^2.0.1",
     "echarts": "^4.7.0",
-    "electron": "^6.1.10",
+    "electron": "^7.2.4",
     "jquery": "^3.5.0",
     "moment": "^2.25.1",
     "numeral": "^2.0.6",
