@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This repo is no longer being maintened, further updates can be found [here](https://github.com/unterricht/ledgerble/)
+
 # ledgerble
 
 A ui for [ledger-cli](https://www.ledger-cli.org/) files
